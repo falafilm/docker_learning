@@ -1,0 +1,64 @@
+DEPLOYMENT
+
+- Traditional Deployment 
+	ติดตั้งรันแอพพลิเคชั่นโดยตรงใน os ของ serverจริง เช่น ติดตั้ว Python & MySQL ลง server แล้วรันแอพโดยตรง (localhost)
+    
+     ข้อเสีย >> เวลารันแอพหลายแอพและใช้ lib version ต่างกัน เช่น python 3.8 อีกอัน 3.11 ทำให้รันไม่ได้ในเครื่องเดียว 
+	    >> ไม่มี Isolation (แยกทรัพยากรและสภาพแวดล้อมของแอพออกจากกัน)
+
+	ประกอบด้วย : Hardware, Host OS, VM
+
+- Virtualized Deployment (เปลืองทรัพยากร)
+	เกิด "Software Hypervisor"(แยกทรัพยากร) จำลอง เครื่องคอมพิวเตอร์ (Virtual Machine : VM) หลายๆเครื่อง ขึ้นมาจากเครื่องจริง (Physical Server: Host) เพื่อรันหลายแอพในเครื่องเดียวกัน สามารถสร้างแอพแยกออกจากกันได้อิสระ
+	ประกอบด้วย : Hardware (cpu, ram, disk), Host OS, Hypervisor(software ตัวกลางทำหน้าที่จัดการ ควบคุม VM แบ่งทรัพยากรให้แต่ละเครื่อง), VM
+
+	>> Hypervisor(software ตัวกลางทำหน้าที่จัดการ ควบคุม VM แบ่งทรัพยากรให้แต่ละเครื่อง)
+		- Bare-matal Hypervisor (Type-1) Hypervisor ที่ติดตั้งและทำงานบนฮาร์ดแวร์โดยตรง เช่น  VMWare ESX, Microsoft Hyper-X สำหรับใช้งานขนาดใหญ่ระดับองค์กร 
+			?? Data Center และ Enterprise Server เป็นต้น ??
+
+		- Hosted Hypervisor (Type-2) ที่ติดตั้งและทำงานบนระบบ OS เช่า VMware Workstation, Oracle Virtual Box เหมาะกับใข้งานทั่วไป 
+			?? พัฒนาทดสอบโปรแกรม, รันโปรแกรมเก่า, Sandbox Environment ??
+
+	>> VM ประกอบด้วย
+		1. Guest OS >> ระบบปฏิบัติการที่ติดตั้งใน Windows, Linux
+		2. Binaries / Libraries >> ชุดคำสั่งที่ใช้รัน
+		3. Appllication >> โปรแกรมที่รัน
+
+- Container Deployment (นิยมใช้สุด!!)
+	บรรจุแอพลิเคชั่นและทรัพยากรเกี่ยวกับการทำงานของแอพ (Code, Library, Config, ...) เก็บไว้ใน contaner เพื่อเอาแอพไปใช้งานที่ไหนก็ได้ ไม่สนใจว่าเป็น OS อะไรฟรือติดตั้งอะไรไว้
+	ประกอบดด้วย: hardware, Host OS, Container Engine, Container
+
+	- Container Engine (software จัดการทำงานควบคุม container)
+		> docker engine**
+		> containerd
+		> CRI-O
+		> Podman
+
+	ประกอบด้วย: Docker CLI, Docker API, Docker deamon
+	- Container กล่องบรรจุแอพปละทุกอย่างสำหรับรันแอพไว้ที่เดียวกัน
+		> source code
+		> runtime environment
+		> การตั้งค่า
+		> Library & Dependency , ....
+	 
+
+>> Docker
+	- Docker Engine
+		1. Docker CLI ป้อน cmd
+		2. Docker API
+		3. Docker deamon
+	- Docker Compose จัดการหลาย contaner
+	- Docker Register เป็น Docker hub ที่เก็บ image ระบบสำเร็จรูป สำหรับให้ผู้อื่นสามารถนำไปใช้ต่อได้คล้าย github
+	- Docker Desktop 
+		1. Docker Engine
+
+	** หากทำการขยายระบบ container จะทำการรันรันเร็วมากขึ้น เพราะ container แรกรับไม่ไหว**
+
+>> การ deploy
+      ขั้นตอน
+	1. เขียน docker file เช่น การติดตั้งการตั้งค่า
+	2. คำสั่ง docker build เป็นแอพสำเร็จรูปเป็น image เพื่อให้ทุกคนใช้งานต่อได้นำไปสร้างเป้น container บรรจุโค้ดไว้ (ยังไม่รัน)
+	3. คำลั่ง docker  run รัน image ทำให้เกิด container ในสภาพแวดล้อมที่ต่างกันได้ (รันอยู่)
+
+ 
+			
