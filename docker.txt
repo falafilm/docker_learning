@@ -44,11 +44,12 @@ DEPLOYMENT
 
 >> Docker
 	- Docker Engine
-		1. Docker CLI ป้อน cmd
+		1. Docker CLI ป้อน cmd 
 		2. Docker API
 		3. Docker deamon
 	- Docker Compose จัดการหลาย contaner
-	- Docker Register เป็น Docker hub ที่เก็บ image ระบบสำเร็จรูป สำหรับให้ผู้อื่นสามารถนำไปใช้ต่อได้คล้าย github
+	- Docker Register เป็น Docker hub ที่เก็บ image ระบบสำเร็จรูป สำหรับให้ผู้อื่นสามารถนำไปใช้ต่อได้คล้าย github เอาไปสร้าง container
+
 	- Docker Desktop 
 		1. Docker Engine
 
@@ -60,9 +61,36 @@ DEPLOYMENT
 	2. คำสั่ง docker build เป็นแอพสำเร็จรูปเป็น image เพื่อให้ทุกคนใช้งานต่อได้นำไปสร้างเป้น container บรรจุโค้ดไว้ (ยังไม่รัน)
 	3. คำลั่ง docker  run รัน image ทำให้เกิด container ในสภาพแวดล้อมที่ต่างกันได้ (รันอยู่)
 
-
 >> ต้องใช้ WSL2 
 
+>> คำสั่งพื้นฐาน docker CLI
+	>> cls คือการ clear command
 
- 
-			
+	1. docker -v /docker --version/ docker version
+	2. docker info รายละเอียด docker
+	3. docker system df แสดงข้อมูลการใข้พื้นที่ disk 
+	4. docker --help ดูคำสั่งทั้งหมดใน docker 
+	5. docker images ดู image ที่มีอยู่ใน container
+	6. docker image --help รายละเอียดคำสั่ง cmd เพื่อจัดการทำ image
+	7. docker image ls คือ list image ที่มีอยู่ใน container
+	8. docker image prune คือการลบ image ที่ไม่ได้ใช้ 
+	9. docker history คือการดูโครงสร้าง image ว่ามีอะไรบ้าง
+
+	>> docker image
+		1. docker pull <image-name>  --> download image เวอร์ชั่นล่าสุดจาก docker hub (ex. socker pull python)
+		2. docker pull <image-name>:<tag> --> download image ตาม version (tag) ที่ระบุใน docker hub (ex. docker pull python:3.12-slim)
+		3. docker images แสดงรายการ images ทั้งหมด
+		4. docker inspect <image-name> รายละเอียด image
+		5. docker rmi <image-id> ลบ image ตาม id (เอาแค่ 4 ตัวแรก)
+		6. docker rmi <image-name>:<tag> ลบ image ตาม ชื่อและ version
+		7. docker image prune การลบ image ที่ไม่ได้ใช้ หลายรายการ
+
+>> ตำแหน่งที่จัดเก็บข้อมูล Docker
+	ตำแหน่ง docelr ที่ใช้จัดเก็บใน linux : var/lib/docker/
+	windows มีกาารใช้ WSL(Windows Subsystem for Linux) 2 ที่ภายใน Linux ตำแหน่งไฟล์ของ
+		-> images, Containerm Volumes จะอยู่ภายใน WSL2 ที่ Docker desktop สร้างไว้ ไม่ใช่ที่ทำใน windows โดยตรง
+
+>> คำสั่งจัดการ Container
+	1. docker run <image-name> รัน container จาก image  
+	2. docker run -d <image-name>
+	
