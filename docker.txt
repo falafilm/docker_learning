@@ -91,6 +91,18 @@ DEPLOYMENT
 		-> images, Containerm Volumes จะอยู่ภายใน WSL2 ที่ Docker desktop สร้างไว้ ไม่ใช่ที่ทำใน windows โดยตรง
 
 >> คำสั่งจัดการ Container
-	1. docker run <image-name> รัน container จาก image  
-	2. docker run -d <image-name>
-	
+	1. docker run <image-name> รัน container จาก image  (รันครั้งแรกจะ pull image ให้เอง) --> docker run postgres
+	2. docker run -d <image-name> รัน container แบบ background ไม่มี Log แสดง
+		-d : detached ใข้ในงาน production 
+	3. docker run -it <image-name> รัน container แบบ interactive พร้อม shell เข้าใช้งานภายใน container (ป้อนคำสั่งใน terminal)
+	4. docker run --name <container-name><image-name> รัน container พร้อมกำหนดชื่อ container ด้วยตัวเอง
+	5. docker ps แสดงรายการ container ที่กำลังทำงานอยู่
+	6. docker ps -a แสดงรายการ container ทั้งหมด 
+	7. docker container prune ลบ container ที่หยุดทำงานออก
+	8. docekr start <container-id> สั่งเริ่มต้น container
+	9. docker stop <container-id> หยุดทำงาน container
+	10. docker restart <container-id> 
+	11. docker pause <container-id> หยุดการทำงานชั่วคราว
+	12. docker unpause <container-id> เริ่มทำงานต่อ
+	13. docker rm <container-id> ลบ container ที่หยุดทำงาน
+	14. docker rm -f <container-id> ลบ container แบบบังคับ
