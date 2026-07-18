@@ -94,15 +94,37 @@ DEPLOYMENT
 	1. docker run <image-name> รัน container จาก image  (รันครั้งแรกจะ pull image ให้เอง) --> docker run postgres
 	2. docker run -d <image-name> รัน container แบบ background ไม่มี Log แสดง
 		-d : detached ใข้ในงาน production 
-	3. docker run -it <image-name> รัน container แบบ interactive พร้อม shell เข้าใช้งานภายใน container (ป้อนคำสั่งใน terminal)
+	3. docker run -it <image-name> รัน container แบบ interactive พร้อม shell เข้าใช้งานภายใน container (ป้อนคำสั่งใน terminal) --> exit
 	4. docker run --name <container-name><image-name> รัน container พร้อมกำหนดชื่อ container ด้วยตัวเอง
+
+		** docker run -it --name <container-name><image-name> คือการรันแบบ powershell และสร้างชื่อเองได้ **
+		** docker run --rm -it --name <container-name><image-name> หากหยุดรันทำการลบทันที **
+		** docker run -dit --name test3 python **
+
 	5. docker ps แสดงรายการ container ที่กำลังทำงานอยู่
 	6. docker ps -a แสดงรายการ container ทั้งหมด 
 	7. docker container prune ลบ container ที่หยุดทำงานออก
 	8. docekr start <container-id> สั่งเริ่มต้น container
+
+		** docker start -ai 2fbf เริ่มทำงาน -ai(attach + interactive) เพื่อให้โปรแกรมข้างในไม่ดับทันที**
+
 	9. docker stop <container-id> หยุดทำงาน container
 	10. docker restart <container-id> 
 	11. docker pause <container-id> หยุดการทำงานชั่วคราว
 	12. docker unpause <container-id> เริ่มทำงานต่อ
 	13. docker rm <container-id> ลบ container ที่หยุดทำงาน
 	14. docker rm -f <container-id> ลบ container แบบบังคับ
+	15. docker rename [ชื่อเดิม_หรือ_IDเดิม] [ชื่อใหม่ที่ต้องการ]
+
+
+>> mongo-db
+	use mydb สร้าง database ของ MongoDB
+
+>> Flask -> micro web framework ของ python
+	ขั้นตอน
+		1. นำ class Flask มาจาก module flask
+		2. app คือ object ของ Flask ใช้ในการตั้งค่า ex. Route, Static, Template
+		3. @app.route('/') เป็น decorator ใช้กำหนดเส้นทาง, URL ของเว็บ จะถูกเรียนใช้ fucntion ภายในเส้นทางนั้น
+		4. รันผ่าน app -> IP Server= 0.0.0.0, PORT =5000, 8080, 3000, ....
+
+>> Docker file
