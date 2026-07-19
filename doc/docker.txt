@@ -134,3 +134,4 @@ DEPLOYMENT
 	1> Base Layer --> คำสั่ง FROM ใช้สำหรับ OS จุดเริ่มต้น image 
 	2> Intermediate Layer --> คำสั่ง RUN, COPY, ADD, WORKDIR ใช้สำหรับการเพิ่มไฟล์, ติดตั้ง Library, คัดลอกไฟล์
 	3> Metadata Layer --> คำสั่ง CMD, EXPOSE, ENV, LABEL ไม่มีการเพิ่ม แก้ไขหรือลบไฟล์ ทำให้มีขนาด 0 ไบต์ (เป็นแค่การตั้งค่า image )
+555
