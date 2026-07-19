@@ -128,4 +128,9 @@ DEPLOYMENT
 		4. รันผ่าน app -> IP Server= 0.0.0.0, PORT =5000, 8080, 3000, ....
 
 >> Docker file
-	
+	สร้าง image จาก doockerfile โดยใช้คำสั่ง docker builde image ขึ้นมา
+	image จะสร้าง layer ขึ้นมา โดยชั้นแรก คือ Base layer (Base image เอา image อื่นมาใช้ในการสร้าง image ใหม่่) ตามด้วย ลำดับการทำงานที่ระบุ(Intermediate layer) 
+
+	1> Base Layer --> คำสั่ง FROM ใช้สำหรับ OS จุดเริ่มต้น image 
+	2> Intermediate Layer --> คำสั่ง RUN, COPY, ADD, WORKDIR ใช้สำหรับการเพิ่มไฟล์, ติดตั้ง Library, คัดลอกไฟล์
+	3> Metadata Layer --> คำสั่ง CMD, EXPOSE, ENV, LABEL ไม่มีการเพิ่ม แก้ไขหรือลบไฟล์ ทำให้มีขนาด 0 ไบต์ (เป็นแค่การตั้งค่า image )
