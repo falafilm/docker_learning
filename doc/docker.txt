@@ -134,4 +134,11 @@ DEPLOYMENT
 	1> Base Layer --> คำสั่ง FROM ใช้สำหรับ OS จุดเริ่มต้น image 
 	2> Intermediate Layer --> คำสั่ง RUN, COPY, ADD, WORKDIR ใช้สำหรับการเพิ่มไฟล์, ติดตั้ง Library, คัดลอกไฟล์
 	3> Metadata Layer --> คำสั่ง CMD, EXPOSE, ENV, LABEL ไม่มีการเพิ่ม แก้ไขหรือลบไฟล์ ทำให้มีขนาด 0 ไบต์ (เป็นแค่การตั้งค่า image )
-555
+
+	คำสั่ง
+		> FROM <image> กำหนด base image (**อยู่บรรทัดเเรกเสมอ**) --> FROM pythom:3.13
+		> WORKDIR <path> กำหนด folderทำงาน ของ container --> WORKDIR docker_learning/app
+		> COPY <host-path><container-path> คัดลองไฟล์จากเครื่องเราไป container --> COPY app.py docker_learning/app/ (*คัดลอกapp.py ไปยัง docker_learning/app/*)
+		> RUN <command> ติดตั้ง dependencies ลงใน container --> RUN npm install, RUN pip install -r requiment.txt
+		> EXPOSE <port-number> เปิด port ภายใน container --> EXPOSE 8080, EXPOSE 5000
+		> CMD ["<command>", "<argl>"] ชุดคำสั่งที่ถูกเรียกใช้งานในตอนเริ่ม เมื่อรัน container --> CMD ["python", "app.py"], CMD ["node", "app.js"]
