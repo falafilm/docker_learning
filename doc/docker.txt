@@ -75,6 +75,7 @@ DEPLOYMENT
 	7. docker image ls คือ list image ที่มีอยู่ใน container
 	8. docker image prune คือการลบ image ที่ไม่ได้ใช้ 
 	9. docker history คือการดูโครงสร้าง image ว่ามีอะไรบ้าง
+		>>docker history <imagename>:<tag>
 
 	>> docker image
 		1. docker pull <image-name>  --> download image เวอร์ชั่นล่าสุดจาก docker hub (ex. socker pull python)
@@ -138,7 +139,28 @@ DEPLOYMENT
 	คำสั่ง
 		> FROM <image> กำหนด base image (**อยู่บรรทัดเเรกเสมอ**) --> FROM pythom:3.13
 		> WORKDIR <path> กำหนด folderทำงาน ของ container --> WORKDIR docker_learning/app
-		> COPY <host-path><container-path> คัดลองไฟล์จากเครื่องเราไป container --> COPY app.py docker_learning/app/ (*คัดลอกapp.py ไปยัง docker_learning/app/*)
+		> COPY <host-path><container-path> (ต้นทาง, ปลายทาง)คัดลองไฟล์จากเครื่องเราไป container --> COPY app.py docker_learning/app/ (*คัดลอกapp.py ไปยัง docker_learning/app/*)
 		> RUN <command> ติดตั้ง dependencies ลงใน container --> RUN npm install, RUN pip install -r requiment.txt
 		> EXPOSE <port-number> เปิด port ภายใน container --> EXPOSE 8080, EXPOSE 5000
 		> CMD ["<command>", "<argl>"] ชุดคำสั่งที่ถูกเรียกใช้งานในตอนเริ่ม เมื่อรัน container --> CMD ["python", "app.py"], CMD ["node", "app.js"]
+
+	ขั้นตอนการทำงาน
+		1. กำหนด base image ที่ต้องการใช้ --> FROM python:3.13
+		2. สร้าง folder ใน container สำหรับเก็บไฟล์งาน --> WORKDIR /Sudarat/app  (folder ที่ตั้งใน container)
+		3. คัดลอกไฟล์ erequirement.txt เข้าไปที่ container --> COPY requirement.txt . (. คือ folder ที่จะสร้างขึ้นเพื่อเอาไปเก็บ)
+		4. ติดตั้ง package ด้วย pip --> RUN pip install --no-cache-dir -r requirement.txt  (เป็นการล้าง cache เพื่อลดขนาดไฟล์ Image )
+		5. คัดลอกไฟล์โค้ดทั้งหมดจาก host เข้าไปใน container  --> COPY .(space).  ให้ไปเก็บจาก docker_learning(Host foder ที่เปิดในปัจจุบันในเครื่องเราเอง)ในfolder /Sudarat/app(direct container) 
+		6. ระบุ port ที่จะใช้ --> EXPOSE 5000
+		7. กำหนดคำสั่งเริ่มต้น เมื่อเริ่มรัน container --> CMD ["python", "app.py"]
+		8. สร้าง image: docker build -t <image-name> . (มีจุด)
+
+			**docker build -t my-python-app .**
+
+		9. สร้าง Image พร้อม tag: docker build -t <image-name>:<tag>
+
+			**docker build -t my-python-app:0.1 .**
+
+	?? ทำการ pip freeze ใน terminal เพื่อจับคู่ version เพื่อเอาไปใช้ export file เป็น requirement.txt >>pip freeze > requirements.txt คำสั่ง??
+														เอาเฉพาะ package app.py ที่ใช้งานมาใช้	  >> pip list --format=freeze > requirements.txt 
+
+		
