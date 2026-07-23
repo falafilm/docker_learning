@@ -163,4 +163,13 @@ DEPLOYMENT
 	?? ทำการ pip freeze ใน terminal เพื่อจับคู่ version เพื่อเอาไปใช้ export file เป็น requirement.txt >>pip freeze > requirements.txt คำสั่ง??
 														เอาเฉพาะ package app.py ที่ใช้งานมาใช้	  >> pip list --format=freeze > requirements.txt 
 
+>> Port Mapping
+	เมื่อทำการ build container แล้ว ยังใช้งานไม่เว็บได้ ให้ทำการเปิด mapping port กล่องบรรจุแอพปละทุกอย่างสำหรับรันแอพไว้ที่เดียวกัน
+	Container Port คือ port ของ container เพื่อให้ไปเชื่มอต่อ container อื่นได้
+		Host port = 3000  
+		Container Port = 5000 (ใน dockerfile ตั้งไว้ 5000 )
+
+		docker run -p [host-port]:[container-port][image-name] --> (p = public port) 
+			--> docker run -p 3000:5000my-python-app:0.1
+
 		
