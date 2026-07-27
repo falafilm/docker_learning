@@ -1,0 +1,11 @@
+name: myproject
+
+services:
+  web:
+    build: .
+    image: my-python-app
+    container_name: my-python-container
+    ports:
+      - "5000:5000"
+
+  

@@ -165,11 +165,94 @@ DEPLOYMENT
 
 >> Port Mapping
 	เมื่อทำการ build container แล้ว ยังใช้งานไม่เว็บได้ ให้ทำการเปิด mapping port กล่องบรรจุแอพปละทุกอย่างสำหรับรันแอพไว้ที่เดียวกัน
-	Container Port คือ port ของ container เพื่อให้ไปเชื่มอต่อ container อื่นได้
+	Container Port คือ port ของ container เพื่อให้ไปเชื่อมต่อ container อื่นได้
 		Host port = 3000  
 		Container Port = 5000 (ใน dockerfile ตั้งไว้ 5000 )
 
 		docker run -p [host-port]:[container-port][image-name] --> (p = public port) 
 			--> docker run -p 3000:5000my-python-app:0.1
+		docker run -P [image-name]
+			--> docker run -P my-python-app:0.1 (ใส่ใน EXPOSE Dockerfile ถึงจะทำงานได้)
+				-P >> P ตัวใหญ่ คือการสุ่ม Port ของ Host Port
 
-		
+	** docker run --rm -p 3000:5000 --name  my-python-container my-python-app:0.1 เป็นการรัน container พร้อม port และปิดเมื่อหยุดรัน**
+
+>> .dockerignore  (file)
+	การเอาไฟล์ออก ไม่อัพขึ้น docker ไฟล์ที่สำคัญจะไม่ทำการเอาขึ้น (.env, API Key, ไฟล์รหัสผ่าน)
+	build image เร็วขึ้น เอาที่ไฟล์ไม่เกี่ยวออกไป (log, node_module)
+	ขั้นตอน	
+	1. สร้างไฟล์ .dockerignore
+	2. ไม่ใส่ Dockerfile ตอน build 
+	3. เลือก folder/file ที่ไม่ต้องการ Dockerfile, page/, doc/
+	4. build image 
+
+
+>> Push image
+	อยากให้คนอื่นเอา image เราไปใช้ โดยเรา push ขึ้น docker hub
+	ขั้นตอนการ push image
+	1. สร้าง repository (ชื่อ image)ใน docker hub (ลงชื่อเข้าใช้) เช่น repository --> python-hi-baby
+		จะได้ >> sudaratsr/python-hi-baby
+
+	2. Build image หรือ นำ image มาใช้งาน คำสั่งเดิม - Tag image คือ ระบุปลายทางบน docker hub เพื่อบอกว่าใครคือเจ้าของ image(username) เก็บใน repo ใด version tag อะไรบ้าง
+		ทำในเว็บ docker hub container 
+
+	3. กำหนด Tag Image ให้ทำงานกับ repository
+
+		* TAG IMAGE *
+			docker tag <local-image:tag><dockerhub-username/repository>:tag>
+		EXAMPLE: 
+			docker tag my-python-app:0.1 <dockerhub-username/python-hi-baby:0.1>
+			docker tag my-python-app dockerhub-username/python-hi-baby
+			>> docker tag my-python-app sudaratsr/python-hi-baby/python-hi-baby:0.1
+
+			!-- tag : latest เป็นค่าเริ่มต้นถ้าไม่ใส่เลข version --! 
+
+	4. push image ขึ้น docker hub
+
+			docker push <username>/python-hi-baby
+				>> docker push sudaratsr/python-hi-baby:0.1
+
+>> Docker Compose จัดการหลาย container พร้อมกันในครั้งเดียว
+	แบ่งเป็น service 
+	1. Frontend -> build imageA-> run (Service A)
+	2. Backend -> build imageB-> run (Service B)
+	3. database -> run (Service C)
+
+	*Backend คุยกับ DB ผ่าน Network *
+
+	file comfig ชื่อ  "compose.yaml" (แบบใหม่) **
+						- ไม่ระบุ version ตั้งชื่อ pj ผ่าน key name --> name: myproject
+					"compose.yml"
+					"docker-compose.yaml" (แบบตั้งเดิม)
+						- ระบุ version ผ่าน key version --> version : '3.8'
+					"docker-compose.yml"
+
+	>>ตัวอย่างการเขียน 
+	name: myproject (ชื่อ container)
+	service:
+		backend: (ชื่อ service)
+			build: . (ตำแหน่ง Dockerfile ใช้ build image)
+			image: my-python-app:latest (นำ custom image ที่ build ก่อนหน้ามาใช้งาน)
+			container_name: sudarat-flask-app (กำหนดชื่อ container)
+			ports:
+				- "3000:5000" (จับคู่ port host, container) 
+
+		db: 
+			image: mongo
+			container_name: sudarat-mongo
+			ports:
+				- "27017:27017"
+
+	>> คำสั่ง Docker Compose
+		1. docker compose up ==> ใช้ build&run รันทุก container ที่อยู่ในแต่ละ service พร้อมกัน
+		2. docker compose up -d  ==> อยู่ในโหมด background (detached mode)
+		3. docker compose up --build  ==> ใช้อัปเดตโค้ด บังคับให้ Build images ใหม่ ที่มีการอัปเดตโค้ด
+		4. docker compose down ==> หยุดรันและลบ container ที่ docker compose สร้างขึ้น ออกจาก service
+		5. docker compose stop ==> 	หยุดรัน container ที่กำหลังทำงานอยู่แต่ละ service ไม่ถูกลบ container 
+		6. docker compose start ==> รันcontainer ในแต่ละ service ที่เคยหยุดทำงานไว้ ใช้รัน container เดิมที่หยุดไว้
+		7. docker compose restart ==> Restart Container เดิม ในแต่ละ service (ทั้งหมดหรือเฉพาะที่ระบุ) 
+		8. docker compose ps ==> แสดงสถานะของ container ที่ถูกจัดการโดย Docker Compose แสดงเฉพาะรายการ container ที่ระบุในไฟล์ compose.yaml
+
+
+>> MongoDB (NoSQL) 
+	เก็บในรูปแบบ document(= row sql) รวมเป็น collection (table sql)

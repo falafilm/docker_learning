@@ -1,0 +1,7 @@
+Dockerfile
+page/
+doc/
+.dockerignore
+venv/
+.vscode/
+.git/
