@@ -256,3 +256,25 @@ DEPLOYMENT
 
 >> MongoDB (NoSQL) 
 	เก็บในรูปแบบ document(= row sql) รวมเป็น collection (table sql)
+	คำสั่งที่เกี่ยวกับ mongo
+	1. show dbs / show database --> แสดงฐานข้อมูทั้งหมดในระบบ
+	2. use <DatabaseName> --> เลือกและสร้างฐานข้อมูล
+		- use studentdb
+
+	3. db.<collection>.insertOne(<Document>) --> เพิ่ม Document จำนวน 1 รายการลงใน Collection
+		- db.student.insertOne(name:"Sudarat",gpa:4.00)
+
+	4. db.<Collection>.find() --> ดึงข้อมูลจาก Collection มาใข้งาน
+		- 	{
+				_id: ObjectId('6a6ba0216e17079de2384e9c'),
+				name: 'Sudarat',
+				gpa: 4
+			}
+
+			{
+				_id: ObjectId('6a6ba0476e17079de2384e9d'),
+				name: 'Nutthawut',
+				gpa: 3.5
+			}
+
+>> PyMongo
