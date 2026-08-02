@@ -278,3 +278,16 @@ DEPLOYMENT
 			}
 
 >> PyMongo
+	ตัวกลาง(Driver): pymongo (lib) เชื่อมระหว่าง python และ mongo --> MongoDB driver
+	- การใช้งานเบื้องต้น
+
+	from pymongo import MongoClient
+
+	#เชื่อมต่อฐานข้อมูล
+	client = MongoClient("mongodb://<host>:<port>/")  --> ("mongodb://localhost:27017/")
+	db = client["<database-name>"] 				--> ["mydb>]
+	collection = db["<collection-name>"]		--> ["user"]
+
+	#บันทึกข้อมูลลง collection
+	collection.insert_one({<Document>}) --> ({"name": "sudarat", "age": 24})
+
